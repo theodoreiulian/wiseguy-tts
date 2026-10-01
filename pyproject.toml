@@ -1,0 +1,26 @@
+[project]
+name = "wiseguy-tts"
+version = "0.1.0"
+description = "Local, fast text-to-speech with a loud North Jersey Italian-American wiseguy accent"
+requires-python = ">=3.12"
+dependencies = [
+    "mlx-audio>=0.5.7",
+    "numpy>=2.5.3",
+    "sounddevice>=0.5.6",
+    "soundfile>=0.14.0",
+]
+
+[project.scripts]
+wiseguy = "wiseguy.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["wiseguy"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
