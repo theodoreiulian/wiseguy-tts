@@ -23,8 +23,8 @@ Everything big and re-downloadable lives in a work directory outside the repo:
 
 How the voice was built (for context):
 
-1. Public-domain House floor speeches from four NY/NJ congressmen were
-   downloaded from their official channels (US government works).
+1. House floor speeches from four NY/NJ congressmen were downloaded from their
+   official channels.
 2. Transcribed with Whisper, cut into 2–14 s clips, and filtered to each
    folder's main speaker with ECAPA.
 3. Cleaned with Resemble-Enhance to remove chamber reverb and PA-mic sound,
@@ -60,16 +60,6 @@ How the voice was built (for context):
   duration.
 - Free disk was often under 30 GB. Each full checkpoint is ~2.4 GB; delete the
   ones you don't keep.
-
-### Data rights
-
-Only train on audio you have the right to use: public domain (e.g. US federal
-government works such as congressional floor video), openly licensed,
-recordings by people who consented, or a hired voice actor. **Do not** train on
-commercial film or TV dialogue (The Godfather, Goodfellas, The Sopranos, etc.)
-without a license from the rights holders. The owner once supplied such clips
-in `training_data/`. They were deliberately *not* used for training. Only
-aggregate accent measurements were taken from them, as a yardstick.
 
 ### Voice identity
 
@@ -356,8 +346,8 @@ render the six lines in §8 and let them decide.
 | top_k 30 | slightly more "natural" score but weaker r-dropping; kept 50 |
 
 Ideas not yet tried, roughly in order of expected value:
-- Add casual, conversational (not floor-speech) public-domain or consented
-  audio from strongly non-rhotic NY/NJ Italian-American men.
+- Add casual, conversational (not floor-speech) audio from strongly non-rhotic
+  NY/NJ Italian-American men.
 - A hired voice actor reading a script written for this character. That's the
   cleanest route to "loud, boastful".
 - LoRA fine-tune of the 1.7B model. Better prosody, but about 2× RAM and slower

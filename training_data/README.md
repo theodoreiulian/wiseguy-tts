@@ -16,8 +16,3 @@ throw out unusable bits myself.
   speakers is fine
 - Optional: a same-named `.txt` next to a file with its transcript, or a
   note in `notes.txt` about who/what is in which file
-
-**Rights:** only add audio you have the right to use: your own recordings,
-people who've agreed to it, a hired voice actor, public-domain or openly
-licensed material. I can't train on commercial film or TV dialogue
-(e.g. The Godfather or Goodfellas) without a license from the rights holders.
