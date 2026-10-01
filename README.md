@@ -28,9 +28,9 @@ Inside the demo:
 ## How it works
 
 **1. A voice that learned the accent from real speakers.** The model is
-fine-tuned on about 6 hours of public-domain speech: House floor speeches from
-official congressional channels, which are US government works. The speakers
-are four New York / New Jersey men chosen for their accents:
+fine-tuned on about 6 hours of House floor speeches from official congressional
+channels. The speakers are four New York / New Jersey men chosen for their
+accents:
 
 | speaker | from | brings |
 |---|---|---|
@@ -64,7 +64,7 @@ The accent is measured, not just claimed. `training/nyjudge.py` aligns
 Whisper words with a wav2vec2 phoneme recognizer and Praat formants, then
 scores the classic New York / Jersey features. It was calibrated on real
 accented speech: the four source speakers, plus aggregate measurements of
-reference TV dialogue that were used as a yardstick only, never for training.
+reference TV dialogue used as a yardstick.
 
 | | dropped r's (F3 ratio¹) | raised "caw-fee" vowel | dropped g's | Whisper WER |
 |---|---|---|---|---|
