@@ -10,10 +10,10 @@ breaking them froze or crashed the owner's laptop.
 
 | thing | where | notes |
 |---|---|---|
-| shipped voice (what `uv run wiseguy` uses) | `models/wiseguy/` | 8-bit MLX, ~1.8 GB. Don't train this one. |
-| **trainable checkpoint of the shipped voice** | `models/finetune/checkpoint/` | full-precision PyTorch Qwen3-TTS 0.6B, custom-voice format, speaker `wiseguy` in codec slot 3000. **Start every fine-tune from here.** |
-| speaker embeddings + voice blend | `models/finetune/speakers.pt` | `{"names", "emb", "voice", "voice_blend"}`. Speakers: desposito, grimm, king, pascrell. Shipped blend: grimm 0.5 + king 0.5. |
-| replay data | `models/finetune/replay_codes.jsonl` | the 1,345 clips (3.1 h) the shipped voice was trained on, as codec tokens + text + speaker. No audio needed. Mix it into every new run so the voice doesn't drift. |
+| shipped voice (what `uv run wiseguy` uses) | `models/wiseguy/` | v3, 8-bit MLX, ~1.9 GB. Don't train this one. |
+| **trainable checkpoint of the shipped voice** | `models/finetune/checkpoint/` | full-precision PyTorch Qwen3-TTS 0.6B v3, custom-voice format, speaker `wiseguy` in codec slot 3000. **Start every fine-tune from here.** |
+| speaker embeddings + voice blend | `models/finetune/speakers.pt` | `{"names", "emb", "voice", "voice_blend"}`. Four original speakers plus ten film/interview labels; shipped blend remains grimm 0.5 + king 0.5. |
+| replay data | `models/finetune/replay_codes.jsonl` | 1,640 clips (about 3.56 h) from v2 plus the quality-filtered v3 corpus, as codec tokens + text + speaker. No audio needed. Mix it into every new run so the voice doesn't drift. |
 | pipeline scripts | `training/` | all take explicit paths; shared locations are in `training/paths.py` |
 | inference engine | `wiseguy/engine.py` | MLX; contains a required prompt-layout patch (see §7) |
 

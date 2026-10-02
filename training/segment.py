@@ -30,6 +30,7 @@ def utterances(words):
 
 def main():
     out = sys.argv[1]
+    os.makedirs(out, exist_ok=True)
     manifest = open(os.path.join(out, "manifest.jsonl"), "w")
     total = {}
     for arg in sys.argv[2:]:
