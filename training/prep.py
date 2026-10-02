@@ -43,7 +43,11 @@ names = sorted({r["speaker"] for r in rows})
 embs = []
 random.seed(0)
 for n in names:
-    clips = [r for r in rows if r["speaker"] == n and r["dur"] > 4]
+    speaker_clips = [r for r in rows if r["speaker"] == n]
+    # Very small role-specific pools can survive the quality gate without a
+    # clip longer than four seconds. Falling back to their shorter clean clips
+    # is preferable to crashing after codec encoding has completed.
+    clips = [r for r in speaker_clips if r["dur"] > 4] or speaker_clips
     clips = random.sample(clips, min(40, len(clips)))
     e = []
     for r in clips:
@@ -70,4 +74,5 @@ w = torch.tensor([weights.get(n, 0.0) for n in names])
 voice = (w[:, None] * emb).sum(0) / w.sum()
 for n, e in zip(names, emb):
     print(f"new voice vs {n}: cos {torch.nn.functional.cosine_similarity(voice, e, dim=0):.3f}")
-torch.save({"names": names, "emb": emb, "voice": voice}, args.spk_out)
+voice_blend = {name: weight for name, weight in weights.items() if weight}
+torch.save({"names": names, "emb": emb, "voice": voice, "voice_blend": voice_blend}, args.spk_out)
