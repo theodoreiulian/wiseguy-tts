@@ -65,10 +65,10 @@ class Wiseguy:
     ) -> None:
         from mlx_audio.tts.utils import load_model
 
-        if not Path(model_dir).exists():
-            raise FileNotFoundError(
-                f"no model at {model_dir}: run `uv run wiseguy-download` first (or set WISEGUY_MODEL)"
-            )
+        if not (Path(model_dir) / "config.json").exists():
+            from .download import fetch
+
+            fetch(model_dir)
         self.model = load_model(Path(model_dir))
         self.model._prepare_generation_inputs = _text_first_inputs(self.model, self.model._prepare_generation_inputs)
         self.speaker = self.model.get_supported_speakers()[0]
