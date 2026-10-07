@@ -894,6 +894,7 @@ name = "wiseguy-tts"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "huggingface-hub" },
     { name = "mlx-audio" },
     { name = "numpy" },
     { name = "sounddevice" },
@@ -907,6 +908,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "huggingface-hub", specifier = ">=1.0" },
     { name = "mlx-audio", specifier = ">=0.5.7" },
     { name = "numpy", specifier = ">=2.5.3" },
     { name = "sounddevice", specifier = ">=0.5.6" },

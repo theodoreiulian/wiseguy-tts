@@ -14,6 +14,12 @@ uv run wiseguy --loud                           # most animated: every sentence 
 uv run wiseguy --accent 2                       # optional: exaggerated street-talk respelling
 ```
 
+The first run downloads the ~1.8 GB voice weights automatically from
+[Hugging Face: theodoreiulian/wiseguy-tts](https://huggingface.co/theodoreiulian/wiseguy-tts)
+into `models/wiseguy/` (Apache 2.0, a fine-tune of Qwen3-TTS 0.6B). To fetch them
+ahead of time, run `uv run wiseguy-download`. Set `WISEGUY_MODEL` to use weights
+elsewhere.
+
 Inside the demo:
 
 | command | does |
