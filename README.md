@@ -40,6 +40,14 @@ and enhanced where needed. Each clip is conditioned on its own speaker's
 embedding during training, so the shipped voice is a new blend, not a clone of
 any one person.
 
+The original model was fine-tuned on House floor speeches from official
+congressional channels, from four New York / New Jersey men chosen for their
+accents. Rep. Bill Pascrell (Paterson, NJ, Italian-American) brings the Jersey
+vowels and a loud, fiery delivery. Rep. Michael Grimm (Brooklyn / Staten
+Island, Italian-American) brings a dropped-r New York accent. Rep. Anthony
+D'Esposito (Long Island, Italian-American) brings New York vowels. Rep. Peter
+King (Queens / Long Island) brings a heavily dropped-r accent.
+
 The current v3 model adds a second, replay-protected fine-tune sourced from
 official or authorized YouTube film/TV clips and actor interviews. The source
 pool covered *The Godfather*, *Donnie Brasco*, *Goodfellas*, *Casino*, and
