@@ -40,6 +40,14 @@ and enhanced where needed. Each clip is conditioned on its own speaker's
 embedding during training, so the shipped voice is a new blend, not a clone of
 any one person.
 
+The current v3 model adds a second, replay-protected fine-tune sourced from
+official or authorized YouTube film/TV clips and actor interviews. The source
+pool covered *The Godfather*, *Donnie Brasco*, *Goodfellas*, *Casino*, and
+*The Sopranos*. From 7.89 raw hours, speaker verification, accent auditing,
+audio enhancement, UTMOS, and transcript matching retained 295 clips (27.7
+minutes). Those clips were trained alongside all 3.1 hours of the v2 replay
+set, so the stronger conversational accent did not erase the clean base voice.
+
 **2. Optional street talk on top (off by default).** A respelling layer
 (`wiseguy/respell.py`) can push an even broader read:
 gonna, whaddaya, lemme, 'cause, "fuhget about it", dese/dem/dose, tink,
