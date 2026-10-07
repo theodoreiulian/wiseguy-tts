@@ -3,7 +3,7 @@
 A local text-to-speech voice with a heavy North Jersey / New York
 Italian-American accent: loud, fast-talking, straight out of a mob picture.
 It's a [Qwen3-TTS](https://github.com/QwenLM/Qwen3-TTS) 0.6B model
-fine-tuned on real accented speech, running on the Mac's GPU through
+fine-tuned on public footage and movie clips, running on the Mac's GPU through
 [MLX](https://github.com/Blaizzy/mlx-audio).
 
 ```bash
@@ -33,16 +33,20 @@ Inside the demo:
 
 ## How it works
 
-**1. A voice that learned the accent from real speakers.** The original model
-was fine-tuned on House floor speeches from official congressional channels.
-The speakers are four New York / New Jersey men chosen for their accents:
+**1. A voice that learned the accent from real speech.** The model was
+fine-tuned on public footage and movie clips of North Jersey / New York
+speakers. The audio was filtered for speaker identity, accent, and audio quality,
+and enhanced where needed. Each clip is conditioned on its own speaker's
+embedding during training, so the shipped voice is a new blend, not a clone of
+any one person.
 
-| speaker | from | brings |
-|---|---|---|
-| Rep. Bill Pascrell | Paterson, NJ (Italian-American) | the Jersey vowels, a loud, fiery delivery |
-| Rep. Michael Grimm | Brooklyn / Staten Island (Italian-American) | a dropped-r New York accent |
-| Rep. Anthony D'Esposito | Long Island (Italian-American) | New York vowels |
-| Rep. Peter King | Queens / Long Island | a heavily dropped-r accent |
+The original model was fine-tuned on House floor speeches from official
+congressional channels, from four New York / New Jersey men chosen for their
+accents. Rep. Bill Pascrell (Paterson, NJ, Italian-American) brings the Jersey
+vowels and a loud, fiery delivery. Rep. Michael Grimm (Brooklyn / Staten
+Island, Italian-American) brings a dropped-r New York accent. Rep. Anthony
+D'Esposito (Long Island, Italian-American) brings New York vowels. Rep. Peter
+King (Queens / Long Island) brings a heavily dropped-r accent.
 
 The current v3 model adds a second, replay-protected fine-tune sourced from
 official or authorized YouTube film/TV clips and actor interviews. The source
@@ -52,12 +56,7 @@ audio enhancement, UTMOS, and transcript matching retained 295 clips (27.7
 minutes). Those clips were trained alongside all 3.1 hours of the v2 replay
 set, so the stronger conversational accent did not erase the clean base voice.
 
-**2. A new voice, not a clone.** Each clip is conditioned on its own speaker's
-embedding during training. The shipped voice remains the same Grimm/King
-*blend* used by v2; the new film and interview speakers teach delivery and
-accent patterns but are not used as the output identity.
-
-**3. Optional street talk on top (off by default).** A respelling layer
+**2. Optional street talk on top (off by default).** A respelling layer
 (`wiseguy/respell.py`) can push an even broader read:
 gonna, whaddaya, lemme, 'cause, "fuhget about it", dese/dem/dose, tink,
 wit', brudduh/mudduh, nuttin, and dropped g's. Every spelling was A/B-tested
@@ -68,25 +67,25 @@ It's off by default because listening showed that even the surviving
 respellings can sound like the wrong word: "duh cops" instead of a Jersey
 "the cops". The trained accent carries the voice on plain text.
 
-The source recordings, transcripts and weights are not in the repo. See
-[FINETUNING.md](FINETUNING.md) for how to make them.
+The training recordings and transcripts are not in the repo. See
+[FINETUNING.md](FINETUNING.md) for how to fine-tune further.
 
 ## Results
 
 The accent is measured, not just claimed. `training/nyjudge.py` aligns
 Whisper words with a wav2vec2 phoneme recognizer and Praat formants, then
 scores the classic New York / Jersey features. It was calibrated on real
-accented speech: the four source speakers, plus aggregate measurements of
-reference TV dialogue used as a yardstick.
+accented speech, plus aggregate measurements of reference dialogue used as a
+yardstick.
 
 | | dropped r's (F3 ratio¹) | raised "caw-fee" vowel | dropped g's | Whisper WER |
 |---|---|---|---|---|
 | target: heavy NY/NJ reference speech | 0.85–0.87 | 43–80 % | 100 % | n/a |
 | stock Kokoro v1 (the first attempt) | n/a | 0 % | 0 % | n/a |
 | Qwen3-TTS zero-shot clone | 0.76 | 73 % | 80 % | n/a |
-| wiseguy v1 (trained on the raw floor recordings) | 0.86 | 91 % | 100 % | 0 % |
-| wiseguy v2 (cleaned congressional audio) | 0.84–0.86 | 91–96 % | 80–100 % | 1.0–1.4 % |
-| **wiseguy v3 (default, film/TV + replay)** | **0.88** | **73 %** | **100 %** | **2.0 %** |
+| wiseguy v1 | 0.86 | 91 % | 100 % | 0 % |
+| wiseguy v2 (cleaned training audio) | 0.84–0.86 | 91–96 % | 80–100 % | 1.0–1.4 % |
+| **wiseguy v3 (default)** | **0.88** | **73 %** | **100 %** | **2.0 %** |
 
 ¹ The lowest third formant in the r-part of words like *car, here, brother*,
 relative to the speaker's typical F3. Pronouncing the r pulls F3 down; about
@@ -95,7 +94,7 @@ Naturalness (UTMOS, a predicted 1–5 listener score) on 24 conversational lines
 
 | | UTMOS (mean / worst) | energy above 4 kHz |
 |---|---|---|
-| raw congressional training audio | 3.1 | |
+| raw training audio | 3.1 | |
 | stock Qwen3-TTS | 4.0 | |
 | wiseguy v1 ("old courtroom mic") | 3.6 / 2.5 | −8.3 dB |
 | wiseguy v2 | 4.1–4.2 / 3.0–3.4 | −6.4 dB |
@@ -103,11 +102,9 @@ Naturalness (UTMOS, a predicted 1–5 listener score) on 24 conversational lines
 
 v2 fixes the "old courtroom microphone" sound. Its training audio was run
 through [Resemble-Enhance](https://github.com/resemble-ai/resemble-enhance)
-(on CPU) to strip the chamber reverb, PA-mic coloration and compression.
-Clips the cleanup couldn't fix were filtered out (UTMOS < 3.0, or Whisper no
-longer matching the transcript), which left 3.1 h. The v1 model was then
-fine-tuned on that audio. The voice blend shifted to Grimm 0.5 / King 0.5 to
-keep the dropped r's at full strength.
+(on CPU) to strip room reverb, mic coloration and compression. Clips the
+cleanup couldn't fix were filtered out (UTMOS < 3.0, or Whisper no longer
+matching the transcript). The v1 model was then fine-tuned on that audio.
 
 ### Expressiveness
 
